@@ -157,7 +157,7 @@ const subnodeTemplates = {
     manhattan: ['Times Square', 'Central Park', 'Subway', 'Restaurants', 'Nightlife', 'Energy', 'Opportunities', 'Diversity'],
     food: ['Cooking', 'Restaurants', 'Cuisines', 'Comfort Food', 'Dining Out', 'Home Cooking', 'Cultural Food', 'Sharing Meals'],
     music: ['Concerts', 'Playlists', 'Artists', 'Genres', 'Dancing to Music', 'Emotions', 'Live Music', 'Headphones'],
-    travel: ['Destinations', 'Adventures', 'Culture', 'Airports', 'New Experiences', 'Solo Travel', 'Road Trips', 'International'],
+    travel: ['India', 'Japan', 'Korea', 'Greece', 'Italy', 'Switzerland', 'Spain', 'Morocco', 'Bali', 'Bermuda', 'Jamaica', 'Bahamas'],
     corporate: ['Career Goals', 'Professional Growth', 'Networking', 'Skills', 'Success', 'Leadership', 'Innovation', 'Work-Life Balance'],
     singing: ['Performance', 'Voice', 'Karaoke', 'Practice', 'Stage', 'Emotion', 'Expression', 'Confidence'],
     faith: ['Temples', 'Festivals', 'Prayer', 'Diwali', 'Stories', 'Philosophy']
