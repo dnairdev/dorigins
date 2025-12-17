@@ -5,7 +5,7 @@ const thoughtNodes = {
         title: 'Is This Diya Nair?',
         text: 'This is my universe—a constellation of everything that makes me who I am. Columbia shaped my mind. Family and friends filled my heart. Love, music, and singing gave me voice. Manhattan taught me to dream bigger. Food, fun, and travel showed me how to live fully. And somewhere ahead, a corporate future waits, shimmering with possibility.',
         meta: 'The center of my universe',
-        connections: ['columbia', 'family', 'friends', 'love', 'manhattan', 'fun'],
+        connections: ['columbia', 'family', 'friends', 'love', 'manhattan', 'fun', 'faith'],
         visited: false,
         x: 0,
         y: 0,
@@ -29,7 +29,7 @@ const thoughtNodes = {
         title: 'Family',
         text: 'The foundation of everything. The people who knew me before I knew myself. Their love is unconditional, their support unwavering. They celebrate my wins and catch me when I fall. In a world of constant change, family is the constant—the place I can always return to, the people who remind me where I came from and why it matters.',
         meta: 'My roots, my home, my heart',
-        connections: ['origin', 'love', 'food', 'music', 'travel'],
+        connections: ['origin', 'love', 'food', 'music', 'travel', 'faith'],
         visited: false,
         image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1200&q=80',
         category: 'relationships',
@@ -133,13 +133,24 @@ const thoughtNodes = {
         image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&q=80',
         category: 'arts',
         color: [200, 100, 255] // Magenta
+    },
+    faith: {
+        id: 'faith',
+        title: 'Faith',
+        text: 'Hinduism is more than religion—it\'s the spiritual thread woven through my identity. The stories of gods and goddesses I grew up with, the festivals that mark the rhythm of the year, the philosophy that teaches me about dharma, karma, and the interconnectedness of all things. Faith gives me grounding when life feels chaotic, wisdom passed down through generations, and a sense of belonging to something eternal and vast.',
+        meta: 'The spiritual roots that ground me',
+        connections: ['origin', 'family', 'love', 'music'],
+        visited: false,
+        image: 'https://images.unsplash.com/photo-1545126178-862cdb469409?w=1200&q=80',
+        category: 'spirituality',
+        color: [255, 180, 80] // Saffron/orange
     }
 };
 
 // Subnodes that can be generated for each main node
 const subnodeTemplates = {
     columbia: ['Butler Library', 'Campus Life', 'Professors', 'Study Groups', 'Graduation', 'Core Curriculum', 'Alumni Network', 'Classes'],
-    family: ['Parents', 'Siblings', 'Home', 'Traditions', 'Holidays', 'Support System', 'Childhood Memories', 'Family Values'],
+    family: ['Dad', 'Mom', 'Grandma (Maternal)', 'Grandpa (Maternal)', 'Grandpa (Paternal)', 'Grandma (Paternal)'],
     friends: ['Best Friends', 'College Friends', 'Group Chats', 'Late Night Talks', 'Adventures Together', 'Inside Jokes', 'Support Network', 'Memories'],
     love: ['Relationships', 'Romance', 'Self-Love', 'Vulnerability', 'Connection', 'Growth', 'Heartbreak', 'Intimacy'],
     fun: ['Parties', 'Adventures', 'Dancing', 'Games', 'Spontaneity', 'Laughter', 'Concerts', 'Celebrations'],
@@ -148,7 +159,8 @@ const subnodeTemplates = {
     music: ['Concerts', 'Playlists', 'Artists', 'Genres', 'Dancing to Music', 'Emotions', 'Live Music', 'Headphones'],
     travel: ['Destinations', 'Adventures', 'Culture', 'Airports', 'New Experiences', 'Solo Travel', 'Road Trips', 'International'],
     corporate: ['Career Goals', 'Professional Growth', 'Networking', 'Skills', 'Success', 'Leadership', 'Innovation', 'Work-Life Balance'],
-    singing: ['Performance', 'Voice', 'Karaoke', 'Practice', 'Stage', 'Emotion', 'Expression', 'Confidence']
+    singing: ['Performance', 'Voice', 'Karaoke', 'Practice', 'Stage', 'Emotion', 'Expression', 'Confidence'],
+    faith: ['Temples', 'Festivals', 'Prayer', 'Diwali', 'Stories', 'Philosophy']
 };
 
 // Canvas and animation variables
