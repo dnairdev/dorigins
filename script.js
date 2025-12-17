@@ -11,7 +11,7 @@ const thoughtNodes = {
         y: 0,
         image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80',
         category: 'self',
-        color: [200, 100, 255] // Purple for self
+        color: [232, 213, 255] // Soft lavender
     },
     columbia: {
         id: 'columbia',
@@ -22,7 +22,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80',
         category: 'education',
-        color: [100, 180, 255] // Blue
+        color: [167, 199, 231] // Powder blue
     },
     family: {
         id: 'family',
@@ -33,7 +33,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1200&q=80',
         category: 'relationships',
-        color: [255, 100, 150] // Pink
+        color: [255, 182, 185] // Blush pink
     },
     friends: {
         id: 'friends',
@@ -44,7 +44,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=80',
         category: 'relationships',
-        color: [255, 120, 180] // Light pink
+        color: [255, 209, 220] // Light rose
     },
     love: {
         id: 'love',
@@ -55,7 +55,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=1200&q=80',
         category: 'relationships',
-        color: [255, 80, 120] // Red-pink
+        color: [219, 160, 190] // Dusty rose
     },
     fun: {
         id: 'fun',
@@ -66,7 +66,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1200&q=80',
         category: 'experiences',
-        color: [255, 220, 100] // Yellow
+        color: [255, 230, 179] // Soft gold
     },
     manhattan: {
         id: 'manhattan',
@@ -77,7 +77,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1200&q=80',
         category: 'places',
-        color: [255, 150, 80] // Orange
+        color: [255, 200, 170] // Soft peach
     },
     food: {
         id: 'food',
@@ -88,7 +88,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80',
         category: 'experiences',
-        color: [255, 180, 100] // Warm orange
+        color: [245, 189, 167] // Warm apricot
     },
     music: {
         id: 'music',
@@ -99,7 +99,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1200&q=80',
         category: 'arts',
-        color: [180, 100, 255] // Purple
+        color: [200, 182, 232] // Soft purple
     },
     travel: {
         id: 'travel',
@@ -110,7 +110,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80',
         category: 'experiences',
-        color: [100, 220, 150] // Green
+        color: [176, 212, 196] // Sage green
     },
     corporate: {
         id: 'corporate',
@@ -121,7 +121,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',
         category: 'education',
-        color: [100, 200, 255] // Cyan
+        color: [176, 224, 230] // Powder cyan
     },
     singing: {
         id: 'singing',
@@ -132,7 +132,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&q=80',
         category: 'arts',
-        color: [200, 100, 255] // Magenta
+        color: [221, 189, 224] // Soft mauve
     },
     faith: {
         id: 'faith',
@@ -143,7 +143,7 @@ const thoughtNodes = {
         visited: false,
         image: 'https://images.unsplash.com/photo-1545126178-862cdb469409?w=1200&q=80',
         category: 'spirituality',
-        color: [255, 180, 80] // Saffron/orange
+        color: [255, 218, 185] // Soft saffron
     }
 };
 
