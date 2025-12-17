@@ -357,34 +357,38 @@ function animate() {
     ctx.scale(camera.zoom, camera.zoom);
     ctx.translate(-camera.x, -camera.y);
     
-    // Draw connections with starlight glow
+    // Draw connections with soft aesthetic lines
     connections.forEach(conn => {
         if (conn.from.visited || conn.to.visited || conn.from.id === 'origin') {
-            const opacity = conn.from.visited && conn.to.visited ? 0.4 : 0.2;
+            const opacity = conn.from.visited && conn.to.visited ? 0.35 : 0.15;
             
-            // Glowing connection line
+            // Get colors from connected nodes for gradient
+            const fromColor = conn.from.color || [255, 255, 255];
+            const toColor = conn.to.color || [255, 255, 255];
+            
+            // Soft gradient between node colors
             const gradient = ctx.createLinearGradient(
                 conn.from.x, conn.from.y,
                 conn.to.x, conn.to.y
             );
-            gradient.addColorStop(0, `rgba(100, 200, 255, ${opacity})`);
-            gradient.addColorStop(0.5, `rgba(150, 180, 255, ${opacity * 0.7})`);
-            gradient.addColorStop(1, `rgba(100, 200, 255, ${opacity})`);
+            gradient.addColorStop(0, `rgba(${fromColor[0]}, ${fromColor[1]}, ${fromColor[2]}, ${opacity})`);
+            gradient.addColorStop(0.5, `rgba(255, 255, 255, ${opacity * 0.5})`);
+            gradient.addColorStop(1, `rgba(${toColor[0]}, ${toColor[1]}, ${toColor[2]}, ${opacity})`);
             
-            // Outer glow
+            // Soft outer glow
             ctx.strokeStyle = gradient;
-            ctx.lineWidth = 3;
-            ctx.shadowColor = 'rgba(100, 200, 255, 0.5)';
-            ctx.shadowBlur = 8;
+            ctx.lineWidth = 2;
+            ctx.shadowColor = `rgba(255, 255, 255, 0.15)`;
+            ctx.shadowBlur = 6;
             ctx.beginPath();
             ctx.moveTo(conn.from.x, conn.from.y);
             ctx.lineTo(conn.to.x, conn.to.y);
             ctx.stroke();
             
-            // Inner bright line
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1;
-            ctx.shadowBlur = 3;
+            // Thin inner line
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.6})`;
+            ctx.lineWidth = 0.5;
+            ctx.shadowBlur = 0;
             ctx.beginPath();
             ctx.moveTo(conn.from.x, conn.from.y);
             ctx.lineTo(conn.to.x, conn.to.y);
