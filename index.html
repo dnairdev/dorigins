@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is This Diya Nair?</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="intro-screen" class="active">
+        <div class="intro-content">
+            <h1 class="glitch">Is This Diya Nair?</h1>
+            <p class="subtitle">A consciousness preserved in data</p>
+            <p class="description">
+                Navigate through a personal universe of everything that makes me who I am.<br>
+                Click on stars to explore the people, places, and passions that define me.<br>
+                Each connection tells the story of how these pieces fit together.
+            </p>
+            <button id="enter-btn">Enter the Mind</button>
+        </div>
+    </div>
+
+    <div id="main-interface">
+        <canvas id="neural-canvas"></canvas>
+        
+        <div id="bubble-metaverse">
+            <div class="bubble-world" id="bubble-world">
+                <!-- Bubble membrane (outermost layer) -->
+                <div class="bubble-membrane"></div>
+                <div class="bubble-glass-highlight"></div>
+                <div class="depth-field"></div>
+                
+                <!-- Interior 3D space -->
+                <div class="bubble-interior">
+                    <div class="bubble-overlay"></div>
+                    <div class="metaverse-grid"></div>
+                    <div class="hologram-scan"></div>
+                </div>
+                
+                <!-- Interactive elements -->
+                <button id="close-bubble">✕</button>
+                <div class="bubble-core"></div>
+                <div class="orbit-container" id="orbit-container"></div>
+                
+                <!-- Content -->
+                <div class="bubble-content">
+                    <h1 class="bubble-title" id="bubble-title"></h1>
+                    <p class="bubble-text" id="bubble-text"></p>
+                    <p class="bubble-meta" id="bubble-meta"></p>
+                </div>
+                
+                <!-- Data streams container -->
+                <div id="data-streams"></div>
+            </div>
+        </div>
+
+        <div id="info-bar">
+            <span id="node-count">Thoughts explored: 0</span>
+            <span id="consciousness-status">Status: Active</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

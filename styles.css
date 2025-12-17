@@ -1,0 +1,1018 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    background: #0a0a0f;
+    color: #e0e0e8;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Intro Screen */
+#intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+}
+
+#intro-screen.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.intro-content {
+    text-align: center;
+    max-width: 600px;
+    padding: 40px;
+}
+
+.glitch {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 2.2em;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+
+.subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.85em;
+    font-weight: 400;
+    color: #888;
+    margin-bottom: 30px;
+}
+
+.description {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.9em;
+    font-weight: 400;
+    line-height: 1.7;
+    color: #999;
+    margin-bottom: 40px;
+}
+
+#enter-btn {
+    padding: 12px 30px;
+    font-size: 0.85em;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#enter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Main Interface */
+#main-interface {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#neural-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: crosshair;
+}
+
+/* Bubble Metaverse Container */
+#bubble-metaverse {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+}
+
+#bubble-metaverse.active {
+    pointer-events: all;
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.bubble-world {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 70vw;
+    height: 70vw;
+    max-width: 750px;
+    max-height: 750px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    overflow: hidden;
+    position: relative;
+    /* Enhanced 3D perspective */
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+/* Enhanced 3D spherical curvature - heavy edge darkening for sphere depth */
+.bubble-world::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: 
+        /* Primary sphere shading - light from upper-right */
+        radial-gradient(
+            ellipse 120% 120% at 70% 25%,
+            transparent 0%,
+            transparent 20%,
+            rgba(0, 0, 0, 0.05) 35%,
+            rgba(0, 0, 0, 0.15) 50%,
+            rgba(0, 0, 0, 0.35) 65%,
+            rgba(0, 0, 0, 0.55) 78%,
+            rgba(0, 0, 0, 0.75) 90%,
+            rgba(0, 0, 0, 0.9) 100%
+        ),
+        /* Edge darkening all around */
+        radial-gradient(
+            circle at center,
+            transparent 35%,
+            rgba(0, 0, 0, 0.1) 50%,
+            rgba(0, 0, 0, 0.3) 70%,
+            rgba(0, 0, 0, 0.6) 85%,
+            rgba(0, 0, 0, 0.85) 100%
+        );
+    pointer-events: none;
+    z-index: 27;
+}
+
+/* Ultra-realistic soap bubble membrane edge with 3D curvature */
+.bubble-membrane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        /* Strong outer glow/atmosphere */
+        0 0 80px rgba(180, 200, 255, 0.6),
+        0 0 120px rgba(150, 180, 255, 0.4),
+        /* 3D drop shadow underneath */
+        0 40px 80px rgba(0, 0, 0, 0.5),
+        0 60px 120px rgba(0, 0, 0, 0.3),
+        /* Inner rim lighting - top bright */
+        inset 0 -60px 100px rgba(0, 0, 0, 0.4),
+        inset 0 40px 60px rgba(255, 255, 255, 0.25),
+        inset -40px 0 60px rgba(255, 255, 255, 0.1),
+        /* Edge definition */
+        inset 0 0 3px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+    z-index: 25;
+}
+
+/* Spherical gradient on membrane for curvature - edge highlights */
+.bubble-membrane::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: 
+        /* Top-right lit edge */
+        radial-gradient(
+            ellipse 60% 60% at 75% 20%,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0.08) 40%,
+            transparent 70%
+        ),
+        /* Bottom-left edge darkening */
+        radial-gradient(
+            ellipse 80% 80% at 20% 85%,
+            rgba(0, 0, 0, 0.25) 0%,
+            rgba(0, 0, 0, 0.1) 40%,
+            transparent 70%
+        );
+}
+
+/* Inner edge ring for glass thickness illusion */
+.bubble-membrane::after {
+    content: '';
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    right: 1%;
+    bottom: 1%;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        inset 0 0 50px rgba(255, 255, 255, 0.05),
+        inset 0 -20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Subtle soap bubble iridescence - thin film interference */
+.bubble-world::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: 
+        /* Pink/magenta band (top-left, following light) */
+        radial-gradient(ellipse at 25% 20%, 
+            rgba(255, 150, 200, 0.35) 0%,
+            rgba(255, 100, 180, 0.25) 20%,
+            transparent 40%
+        ),
+        /* Purple band (bottom-left shadow area) */
+        radial-gradient(ellipse at 25% 80%,
+            rgba(160, 120, 255, 0.4) 0%,
+            rgba(130, 100, 220, 0.3) 25%,
+            transparent 50%
+        ),
+        /* Cyan/blue band (right side) */
+        radial-gradient(ellipse at 90% 45%,
+            rgba(100, 180, 255, 0.25) 0%,
+            rgba(80, 160, 240, 0.15) 30%,
+            transparent 55%
+        ),
+        /* Subtle green at bottom */
+        radial-gradient(ellipse at 50% 90%,
+            rgba(100, 200, 180, 0.2) 0%,
+            transparent 40%
+        );
+    opacity: 0.7;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    z-index: 23;
+    filter: blur(15px);
+}
+
+/* Enhanced 3D glass highlight - main specular reflection */
+.bubble-glass-highlight {
+    position: absolute;
+    top: 5%;
+    right: 8%;
+    width: 35%;
+    height: 35%;
+    background: radial-gradient(
+        ellipse 80% 80% at 40% 40%,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.85) 15%,
+        rgba(255, 255, 255, 0.5) 35%,
+        rgba(255, 255, 255, 0.2) 55%,
+        transparent 80%
+    );
+    border-radius: 50%;
+    filter: blur(8px);
+    pointer-events: none;
+    z-index: 28;
+}
+
+/* Sharp bright hotspot - the "sun" reflection */
+.bubble-glass-highlight::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 255, 0.9) 20%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(3px);
+}
+
+/* Secondary specular - rim light on opposite side */
+.bubble-glass-highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -280%;
+    left: -200%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.15) 50%,
+        transparent 80%
+    );
+    border-radius: 50%;
+    filter: blur(12px);
+}
+
+@keyframes subtle-shimmer {
+    0%, 100% {
+        opacity: 0.95;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.03);
+    }
+}
+
+/* 3D Metaverse interior container with spherical distortion */
+.bubble-interior {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    transform: translateZ(-50px);
+    transform-style: preserve-3d;
+    z-index: 1;
+}
+
+/* Enhanced spherical lighting - creates 3D volume effect */
+.bubble-interior::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: 
+        /* Bright area where light hits */
+        radial-gradient(
+            ellipse at 35% 30%,
+            rgba(255, 255, 255, 0.18) 0%,
+            rgba(255, 255, 255, 0.12) 15%,
+            rgba(255, 255, 255, 0.06) 30%,
+            transparent 50%
+        ),
+        /* Gradual darkening toward edges */
+        radial-gradient(
+            circle at center,
+            transparent 30%,
+            rgba(0, 0, 0, 0.05) 55%,
+            rgba(0, 0, 0, 0.15) 80%,
+            rgba(0, 0, 0, 0.3) 95%
+        );
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Metaverse grid overlay */
+.metaverse-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        /* Perspective grid lines */
+        linear-gradient(0deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+        /* Radial grid */
+        repeating-radial-gradient(circle at 50% 50%,
+            transparent 0,
+            transparent 40px,
+            rgba(100, 200, 255, 0.05) 40px,
+            rgba(100, 200, 255, 0.05) 42px
+        );
+    background-size: 50px 50px, 50px 50px, 100% 100%;
+    background-position: center;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0.4;
+    transform: scale(1.1);
+}
+
+/* Holographic scan lines - static */
+.hologram-scan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 255, 0.02) 0px,
+        rgba(0, 255, 255, 0) 2px,
+        rgba(0, 255, 255, 0) 4px
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 15;
+}
+
+/* Digital particles/data streams */
+.data-stream {
+    position: absolute;
+    width: 2px;
+    height: 30px;
+    background: linear-gradient(to bottom, 
+        rgba(0, 255, 255, 0.8), 
+        rgba(0, 255, 255, 0)
+    );
+    border-radius: 2px;
+    pointer-events: none;
+    animation: stream-fall linear infinite;
+    z-index: 8;
+}
+
+@keyframes stream-fall {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(800px);
+        opacity: 0;
+    }
+}
+
+/* Dark overlay with depth - creates inner atmosphere */
+.bubble-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse 90% 90% at 60% 35%,
+        rgba(5, 5, 15, 0.5) 0%,
+        rgba(8, 8, 18, 0.6) 40%,
+        rgba(5, 5, 15, 0.75) 100%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Enhanced ambient occlusion at bottom - creates depth */
+.bubble-overlay::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 40%;
+    background: 
+        radial-gradient(ellipse at center bottom,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0.3) 30%,
+            rgba(0, 0, 0, 0.1) 60%,
+            transparent 100%
+        );
+    filter: blur(25px);
+    border-radius: 50%;
+}
+
+/* Top light area - where light enters the sphere */
+.bubble-overlay::after {
+    content: '';
+    position: absolute;
+    top: 5%;
+    right: 10%;
+    width: 40%;
+    height: 35%;
+    background: 
+        radial-gradient(ellipse at center,
+            rgba(255, 255, 255, 0.08) 0%,
+            rgba(255, 255, 255, 0.03) 50%,
+            transparent 100%
+        );
+    filter: blur(20px);
+    border-radius: 50%;
+}
+
+/* Depth field effect - creates the 3D volume curvature */
+.depth-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+        ellipse 100% 100% at 65% 30%,
+        transparent 0%,
+        transparent 30%,
+        rgba(0, 0, 0, 0.1) 45%,
+        rgba(0, 0, 0, 0.25) 58%,
+        rgba(0, 0, 0, 0.45) 72%,
+        rgba(0, 0, 0, 0.7) 88%,
+        rgba(0, 0, 0, 0.9) 100%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 24;
+}
+
+/* Bottom rim light reflection - like light bouncing from surface */
+.depth-field::before {
+    content: '';
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 20%;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(200, 220, 255, 0.15) 0%,
+        rgba(180, 200, 255, 0.08) 40%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(20px);
+}
+
+/* Secondary specular highlight (bottom-left) for 3D rim lighting */
+.depth-field::after {
+    content: '';
+    position: absolute;
+    bottom: 12%;
+    left: 8%;
+    width: 22%;
+    height: 22%;
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.2) 0%,
+        rgba(255, 255, 255, 0.1) 40%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    filter: blur(15px);
+}
+
+.bubble-world.visible {
+    transform: translate(-50%, -50%) scale(1) rotateX(2deg);
+}
+
+.bubble-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 55%;
+    max-width: 550px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.3s;
+    z-index: 20;
+    background: radial-gradient(
+        ellipse at center, 
+        rgba(10, 10, 20, 0.95) 0%, 
+        rgba(10, 10, 20, 0.85) 50%,
+        transparent 100%
+    );
+    padding: 50px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.bubble-world.visible .bubble-content {
+    opacity: 1;
+}
+
+.bubble-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 25px;
+}
+
+.bubble-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.95em;
+    font-weight: 400;
+    line-height: 1.7;
+    color: #ccc;
+    margin-bottom: 25px;
+}
+
+.bubble-meta {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.85em;
+    color: #888;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 30px;
+}
+
+/* Orbiting connected nodes */
+.orbit-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    animation: slow-rotate 60s linear infinite;
+    z-index: 5;
+}
+
+@keyframes slow-rotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.orbit-node {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.3), rgba(50, 100, 200, 0.15));
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: all;
+    transition: all 0.3s ease;
+    animation: orbit-glow 2s ease-in-out infinite, orbit-float 4s ease-in-out infinite;
+    box-shadow: 
+        0 0 20px rgba(100, 200, 255, 0.5),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+}
+
+.orbit-node:hover {
+    background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.5), rgba(50, 100, 200, 0.3));
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.3);
+    box-shadow: 
+        0 0 40px rgba(100, 200, 255, 0.8),
+        0 0 60px rgba(255, 100, 200, 0.4),
+        inset 0 0 30px rgba(255, 255, 255, 0.2);
+    animation: orbit-glow 1s ease-in-out infinite, orbit-float 4s ease-in-out infinite;
+}
+
+@keyframes orbit-glow {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(100, 200, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(100, 200, 255, 0.6);
+    }
+}
+
+@keyframes orbit-float {
+    0%, 100% {
+        transform: translate(-50%, -50%) translateY(0px);
+    }
+    50% {
+        transform: translate(-50%, -50%) translateY(-8px);
+    }
+}
+
+.orbit-node-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.7em;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    line-height: 1.3;
+}
+
+/* Connection lines from center to orbit nodes */
+.orbit-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 45%;
+    background: linear-gradient(to bottom, rgba(100, 200, 255, 0.3), rgba(100, 200, 255, 0));
+    transform-origin: top center;
+    pointer-events: none;
+    opacity: 0;
+    animation: line-appear 1s ease forwards;
+}
+
+@keyframes line-appear {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Inner core glow */
+.bubble-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle, 
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(100, 200, 255, 0.5) 30%,
+        rgba(100, 200, 255, 0.2) 60%, 
+        transparent 100%
+    );
+    box-shadow: 
+        0 0 30px rgba(100, 200, 255, 0.6),
+        0 0 50px rgba(100, 200, 255, 0.3);
+    animation: core-pulse 2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 4;
+}
+
+@keyframes core-pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.4);
+        opacity: 1;
+    }
+}
+
+/* Close X button */
+#close-bubble {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.2em;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 200;
+}
+
+#close-bubble:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+/* Data streams container - disabled */
+#data-streams {
+    display: none;
+}
+
+/* Particle effects in bubble */
+.bubble-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.8), rgba(0, 255, 255, 0));
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float-particle 10s linear infinite;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    z-index: 6;
+}
+
+@keyframes float-particle {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+
+/* Tech pattern - static dots */
+.metaverse-grid::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    transform: translate(-50%, -50%);
+    background-image: 
+        radial-gradient(circle, rgba(0, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 35px 35px;
+    pointer-events: none;
+    border-radius: 50%;
+    opacity: 0.5;
+}
+
+#close-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #64c8ff;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+#close-panel:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+#thought-content {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#thought-title {
+    font-size: 1.5em;
+    color: #64c8ff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+}
+
+#thought-text {
+    font-size: 1em;
+    line-height: 1.8;
+    color: #d0d0e0;
+    margin-bottom: 25px;
+    text-align: justify;
+}
+
+#thought-meta {
+    font-size: 0.85em;
+    color: #8888aa;
+    font-style: italic;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: rgba(100, 200, 255, 0.05);
+    border-left: 2px solid rgba(100, 200, 255, 0.3);
+}
+
+#connections-list {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(100, 200, 255, 0.2);
+}
+
+#connections-list h3 {
+    font-size: 1em;
+    color: #9999bb;
+    margin-bottom: 15px;
+}
+
+.connection-link {
+    display: block;
+    padding: 12px 15px;
+    margin: 8px 0;
+    background: rgba(100, 200, 255, 0.05);
+    border: 1px solid rgba(100, 200, 255, 0.2);
+    color: #64c8ff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9em;
+}
+
+.connection-link:hover {
+    background: rgba(100, 200, 255, 0.15);
+    border-color: rgba(100, 200, 255, 0.5);
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(100, 200, 255, 0.3);
+}
+
+/* Info Bar */
+#info-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.75em;
+    font-weight: 400;
+    color: #666;
+    z-index: 50;
+}
+
+#consciousness-status {
+    opacity: 0.8;
+}
+
+/* Scrollbar Styling */
+#thought-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+#thought-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+#thought-panel::-webkit-scrollbar-thumb {
+    background: rgba(100, 200, 255, 0.3);
+    border-radius: 4px;
+}
+
+#thought-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 200, 255, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #thought-panel {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .glitch {
+        font-size: 2em;
+    }
+    
+    .intro-content {
+        padding: 20px;
+    }
+}
+
