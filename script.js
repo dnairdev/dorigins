@@ -18,7 +18,7 @@ const thoughtNodes = {
         title: 'Columbia',
         text: 'These halls shaped how I think, how I question, how I see the world. Late nights in Butler Library, conversations that stretched until dawn, professors who challenged everything I thought I knew. Columbia wasn\'t just education—it was transformation. It taught me to be curious, critical, fearless. It gave me the tools to build my future.',
         meta: 'Where my mind learned to soar',
-        connections: ['origin', 'friends', 'manhattan', 'corporate', 'fun'],
+        connections: ['origin', 'friends', 'manhattan', 'corporate', 'fun', 'clubs'],
         visited: false,
         image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80',
         category: 'education',
@@ -144,6 +144,17 @@ const thoughtNodes = {
         image: 'https://images.unsplash.com/photo-1545126178-862cdb469409?w=1200&q=80',
         category: 'spirituality',
         color: [255, 218, 185] // Soft saffron
+    },
+    clubs: {
+        id: 'clubs',
+        title: 'Clubs',
+        text: 'The communities within the community. Clubs are where I found my people—passionate individuals who share my interests and push me to grow. From late-night meetings to campus events, these organizations shaped my college experience beyond the classroom. They taught me leadership, collaboration, and the power of bringing people together around a shared purpose.',
+        meta: 'Where passions become communities',
+        connections: ['columbia', 'friends', 'fun'],
+        visited: false,
+        image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80',
+        category: 'education',
+        color: [186, 200, 222] // Soft steel blue
     }
 };
 
@@ -160,7 +171,8 @@ const subnodeTemplates = {
     travel: ['India', 'Japan', 'Korea', 'Greece', 'Italy', 'Switzerland', 'Spain', 'Morocco', 'Bali', 'Bermuda', 'Jamaica', 'Bahamas'],
     corporate: ['Career Goals', 'Professional Growth', 'Networking', 'Skills', 'Success', 'Leadership', 'Innovation', 'Work-Life Balance'],
     singing: ['Performance', 'Voice', 'Karaoke', 'Practice', 'Stage', 'Emotion', 'Expression', 'Confidence'],
-    faith: ['Temples', 'Festivals', 'Prayer', 'Diwali', 'Stories', 'Philosophy']
+    faith: ['Temples', 'Festivals', 'Prayer', 'Diwali', 'Stories', 'Philosophy'],
+    clubs: ['Leadership', 'Events', 'Meetings', 'Community', 'Projects', 'Networking']
 };
 
 // Canvas and animation variables
