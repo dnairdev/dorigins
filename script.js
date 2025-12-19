@@ -3,9 +3,9 @@ const thoughtNodes = {
     origin: {
         id: 'origin',
         title: 'Is This Diya Nair?',
-        text: 'This is my universe—a constellation of everything that makes me who I am. Columbia shaped my mind. Family and friends filled my heart. Love, music, and singing gave me voice. Manhattan taught me to dream bigger. Food, fun, and travel showed me how to live fully. And somewhere ahead, a corporate future waits, shimmering with possibility.',
+        text: 'This is my universe—a constellation of everything that makes me who I am. Columbia shaped my mind. Family and friends filled my heart. Love, music, and singing gave me voice. Food, fun, and travel showed me how to live fully. And somewhere ahead, a corporate future waits, shimmering with possibility.',
         meta: 'The center of my universe',
-        connections: ['columbia', 'family', 'friends', 'love', 'manhattan', 'fun', 'faith'],
+        connections: ['columbia', 'family', 'friends', 'love', 'fun', 'faith'],
         visited: false,
         x: 0,
         y: 0,
@@ -18,7 +18,7 @@ const thoughtNodes = {
         title: 'Columbia',
         text: 'These halls shaped how I think, how I question, how I see the world. Late nights in Butler Library, conversations that stretched until dawn, professors who challenged everything I thought I knew. Columbia wasn\'t just education—it was transformation. It taught me to be curious, critical, fearless. It gave me the tools to build my future.',
         meta: 'Where my mind learned to soar',
-        connections: ['origin', 'friends', 'manhattan', 'corporate', 'fun', 'clubs'],
+        connections: ['origin', 'friends', 'corporate', 'fun', 'clubs'],
         visited: false,
         image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1200&q=80',
         category: 'education',
@@ -40,7 +40,7 @@ const thoughtNodes = {
         title: 'Friends',
         text: 'The family I chose. The people who make life an adventure, who turn ordinary moments into memories. We laugh until we cry, we dream out loud, we build each other up. Friends are the ones who see you at your worst and love you anyway. They\'re late-night talks, spontaneous plans, inside jokes that never get old. They\'re proof that you\'re never alone.',
         meta: 'My chosen constellation',
-        connections: ['origin', 'columbia', 'fun', 'travel', 'singing', 'manhattan'],
+        connections: ['origin', 'columbia', 'fun', 'travel', 'singing'],
         visited: false,
         image: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=80',
         category: 'relationships',
@@ -68,23 +68,12 @@ const thoughtNodes = {
         category: 'experiences',
         color: [255, 230, 179] // Soft gold
     },
-    manhattan: {
-        id: 'manhattan',
-        title: 'Manhattan',
-        text: 'The city that never sleeps, and neither do I when I\'m here. Sky-high ambitions and skyscrapers to match. The energy is electric—millions of dreams colliding on every corner. Manhattan taught me to walk fast, think faster, and never apologize for wanting more. It\'s where I learned that you can reinvent yourself as many times as you want. This city doesn\'t ask who you were; it asks who you\'re becoming.',
-        meta: 'Where dreams take concrete form',
-        connections: ['origin', 'columbia', 'corporate', 'friends', 'food', 'music'],
-        visited: false,
-        image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1200&q=80',
-        category: 'places',
-        color: [255, 200, 170] // Soft peach
-    },
     food: {
         id: 'food',
         title: 'Food',
         text: 'More than sustenance—it\'s culture, memory, love. Every dish tells a story. The comfort of home cooking, the thrill of trying something new, the ritual of breaking bread with people you care about. Food is how we celebrate, how we mourn, how we connect. It\'s the taste of travel, the warmth of tradition, the adventure of a bite you\'ve never tried before. Some of my best memories happened around a table.',
         meta: 'Nourishment for body and soul',
-        connections: ['origin', 'family', 'manhattan', 'travel', 'fun'],
+        connections: ['origin', 'family', 'travel', 'fun'],
         visited: false,
         image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80',
         category: 'experiences',
@@ -95,7 +84,7 @@ const thoughtNodes = {
         title: 'Music',
         text: 'The universal language that needs no translation. Music is emotion made audible—joy, heartbreak, rage, hope, all wrapped in melody and rhythm. It\'s the soundtrack to every important moment of my life. Music moves me, literally and figuratively. It\'s in my headphones on the subway, in my heart when I need comfort, in the air when I need to dance. Without music, the world would be quieter. And lonelier.',
         meta: 'The language of the soul',
-        connections: ['origin', 'singing', 'love', 'manhattan', 'family'],
+        connections: ['origin', 'singing', 'love', 'family'],
         visited: false,
         image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=1200&q=80',
         category: 'arts',
@@ -117,7 +106,7 @@ const thoughtNodes = {
         title: 'Corporate Future',
         text: 'The path ahead shimmers with possibility and pressure. The corporate world—where dreams meet spreadsheets, where ambition wears a suit. It\'s scary and exciting in equal measure. Can I make an impact? Can I stay true to myself while climbing the ladder? Can I change the system from within? The future isn\'t written yet. I get to define what success means. And that\'s both terrifying and empowering.',
         meta: 'The未来 I\'m building',
-        connections: ['origin', 'columbia', 'manhattan', 'travel', 'music'],
+        connections: ['origin', 'columbia', 'travel', 'music'],
         visited: false,
         image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',
         category: 'education',
@@ -160,12 +149,11 @@ const thoughtNodes = {
 
 // Subnodes that can be generated for each main node
 const subnodeTemplates = {
-    columbia: ['Butler Library', 'Campus Life', 'Professors', 'Study Groups', 'Graduation', 'Core Curriculum', 'Alumni Network', 'Classes'],
+    columbia: ['Classes', 'Columbia Daily Spectator', 'Hindu Students Organization', 'Research', 'Computing Fellow', 'Teaching Assistant'],
     family: ['Dad', 'Mom', 'Grandma (Maternal)', 'Grandpa (Maternal)', 'Grandpa (Paternal)', 'Grandma (Paternal)'],
     friends: ['Best Friends', 'College Friends', 'Group Chats', 'Late Night Talks', 'Adventures Together', 'Inside Jokes', 'Support Network', 'Memories'],
     love: ['Relationships', 'Romance', 'Self-Love', 'Vulnerability', 'Connection', 'Growth', 'Heartbreak', 'Intimacy'],
     fun: ['Parties', 'Adventures', 'Dancing', 'Games', 'Spontaneity', 'Laughter', 'Concerts', 'Celebrations'],
-    manhattan: ['Times Square', 'Central Park', 'Subway', 'Restaurants', 'Nightlife', 'Energy', 'Opportunities', 'Diversity'],
     food: ['Cooking', 'Restaurants', 'Cuisines', 'Comfort Food', 'Dining Out', 'Home Cooking', 'Cultural Food', 'Sharing Meals'],
     music: ['Concerts', 'Playlists', 'Artists', 'Genres', 'Dancing to Music', 'Emotions', 'Live Music', 'Headphones'],
     travel: ['India', 'Japan', 'Korea', 'Greece', 'Italy', 'Switzerland', 'Spain', 'Morocco', 'Bali', 'Bermuda', 'Jamaica', 'Bahamas'],
@@ -912,5 +900,5 @@ document.getElementById('close-bubble').addEventListener('click', closeBubbleMet
 
 // Easter egg: Console message
 console.log('%cIs this Diya Nair?', 'color: #64c8ff; font-size: 20px; font-weight: bold;');
-console.log('%cA universe of everything that makes me who I am—Columbia, family, friends, love, Manhattan, music, and dreams yet to unfold.', 'color: #9999bb; font-size: 12px;');
+console.log('%cA universe of everything that makes me who I am—Columbia, family, friends, love, music, and dreams yet to unfold.', 'color: #9999bb; font-size: 12px;');
 console.log('%cYou found the hidden message. Welcome to my constellation. ✨', 'color: #7777aa; font-size: 10px; font-style: italic;');

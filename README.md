@@ -5,7 +5,7 @@ An interactive constellation of everything that makes me who I am—my passions,
 
 ## About This Project
 
-This is my universe visualized: a cosmic map of the things and people that define me. Navigate through glowing stars floating in deep space—each one representing a piece of my identity. Columbia. Family. Friends. Love. Manhattan. Music. Food. Travel. Fun. Singing. And somewhere ahead, a corporate future waiting to be written.
+This is my universe visualized: a cosmic map of the things and people that define me. Navigate through glowing stars floating in deep space—each one representing a piece of my identity. Columbia. Family. Friends. Love. Music. Food. Travel. Fun. Singing. And somewhere ahead, a corporate future waiting to be written.
 
 Each star is connected to others, showing how these parts of my life interweave and shape each other. Click on any star to explore that world within my universe.
 
@@ -16,7 +16,6 @@ Each star is connected to others, showing how these parts of my life interweave 
 - **Friends**: My chosen constellation, the people who make life an adventure
 - **Love**: What makes everything worth it—in all its beautiful, terrifying forms
 - **Fun**: The art of living fully, laughing deeply, saying yes to joy
-- **Manhattan**: The city that taught me to dream bigger and walk faster
 - **Food**: Culture, memory, and connection around every table
 - **Music**: The language of the soul, the soundtrack to my life
 - **Travel**: The best education, expanding who I am with every journey
@@ -88,7 +87,7 @@ Each star is connected to others, showing how these parts of my life interweave 
 
 ## The Experience
 
-This isn't just a website—it's a journey through someone's universe. As you explore each star and travel between worlds, you'll see how Columbia connects to Manhattan, how family ties into love, how music flows into singing, and how all these pieces create a complete picture of a life being lived.
+This isn't just a website—it's a journey through someone's universe. As you explore each star and travel between worlds, you'll see how Columbia connects to friends, how family ties into love, how music flows into singing, and how all these pieces create a complete picture of a life being lived.
 
 It's personal. It's beautiful. It's a constellation of identity floating in cosmic space.
 
