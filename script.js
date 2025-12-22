@@ -314,31 +314,84 @@ function createConnections() {
     });
 }
 
-// Simple static star background
+// Enhanced starfield with varied sizes and twinkle
 let universeStars = [];
+let animationTime = 0;
+let hoveredNode = null; // Track hovered node for focus mode
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function initializeUniverse() {
-    // Create simple static background stars
-    const starCount = 400;
+    const starCount = 300;
     universeStars = [];
     for (let i = 0; i < starCount; i++) {
+        // Varied star types: mostly small, few large
+        const sizeRand = Math.random();
+        let size;
+        if (sizeRand > 0.95) size = 1.5 + Math.random() * 0.8; // Large stars (5%)
+        else if (sizeRand > 0.8) size = 0.8 + Math.random() * 0.5; // Medium stars (15%)
+        else size = 0.3 + Math.random() * 0.4; // Small stars (80%)
+        
+        // Slight color variation (cool to warm)
+        const warmth = Math.random();
+        const r = warmth > 0.7 ? 255 : 200 + Math.random() * 30;
+        const g = 200 + Math.random() * 30;
+        const b = warmth < 0.3 ? 255 : 220 + Math.random() * 20;
+        
         universeStars.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            size: Math.random() * 1.5,
-            brightness: 0.3 + Math.random() * 0.7
+            size: size,
+            baseBrightness: 0.2 + Math.random() * 0.5,
+            twinkleSpeed: 0.5 + Math.random() * 2,
+            twinklePhase: Math.random() * Math.PI * 2,
+            color: { r, g, b }
         });
     }
 }
 
 function drawUniverseBackground() {
-    // Simple dark background
-    ctx.fillStyle = '#0a0a12';
+    // Base deep background
+    ctx.fillStyle = '#06060a';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Draw static stars
+    // Vignette gradient (brighter center, darker edges)
+    const vignetteGradient = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height) * 0.7
+    );
+    vignetteGradient.addColorStop(0, 'rgba(18, 18, 28, 0.4)');
+    vignetteGradient.addColorStop(0.5, 'rgba(10, 10, 16, 0.2)');
+    vignetteGradient.addColorStop(1, 'rgba(4, 4, 8, 0)');
+    ctx.fillStyle = vignetteGradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw stars with soft twinkle
     universeStars.forEach(star => {
-        ctx.fillStyle = `rgba(200, 200, 220, ${star.brightness * 0.6})`;
+        let brightness = star.baseBrightness;
+        
+        // Add subtle twinkle animation (skip if reduced motion)
+        if (!reducedMotion) {
+            const twinkle = Math.sin(animationTime * star.twinkleSpeed + star.twinklePhase);
+            brightness = star.baseBrightness * (0.7 + twinkle * 0.3);
+        }
+        
+        // Soft glow for larger stars
+        if (star.size > 1.0) {
+            const glowGradient = ctx.createRadialGradient(
+                star.x, star.y, 0,
+                star.x, star.y, star.size * 3
+            );
+            glowGradient.addColorStop(0, `rgba(${star.color.r}, ${star.color.g}, ${star.color.b}, ${brightness * 0.3})`);
+            glowGradient.addColorStop(0.5, `rgba(${star.color.r}, ${star.color.g}, ${star.color.b}, ${brightness * 0.1})`);
+            glowGradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = glowGradient;
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Star core
+        ctx.fillStyle = `rgba(${star.color.r}, ${star.color.g}, ${star.color.b}, ${brightness * 0.8})`;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
@@ -346,6 +399,11 @@ function drawUniverseBackground() {
 }
 
 function animate() {
+    // Update animation time for effects
+    if (!reducedMotion) {
+        animationTime += 0.016; // ~60fps
+    }
+    
     // Draw universe background
     drawUniverseBackground();
     
@@ -357,14 +415,33 @@ function animate() {
     ctx.scale(camera.zoom, camera.zoom);
     ctx.translate(-camera.x, -camera.y);
     
+    // Determine neighbors of hovered node for focus mode
+    const neighborIds = new Set();
+    if (hoveredNode) {
+        neighborIds.add(hoveredNode.id);
+        if (hoveredNode.connections) {
+            hoveredNode.connections.forEach(id => neighborIds.add(id));
+        }
+    }
+    
     // Draw connections with soft aesthetic lines
     connections.forEach(conn => {
         if (conn.from.visited || conn.to.visited || conn.from.id === 'origin') {
-            const opacity = conn.from.visited && conn.to.visited ? 0.35 : 0.15;
+            // Calculate base opacity
+            let baseOpacity = conn.from.visited && conn.to.visited ? 0.12 : 0.06;
             
-            // Get colors from connected nodes for gradient
-            const fromColor = conn.from.color || [255, 255, 255];
-            const toColor = conn.to.color || [255, 255, 255];
+            // Focus mode: increase neighbor connections, fade others
+            let focusMultiplier = 1;
+            if (hoveredNode) {
+                const isNeighborConnection = neighborIds.has(conn.from.id) && neighborIds.has(conn.to.id);
+                focusMultiplier = isNeighborConnection ? 3.5 : 0.3;
+            }
+            
+            const opacity = Math.min(baseOpacity * focusMultiplier, 0.5);
+            
+            // Get colors from connected nodes
+            const fromColor = conn.from.color || [200, 180, 230];
+            const toColor = conn.to.color || [200, 180, 230];
             
             // Soft gradient between node colors
             const gradient = ctx.createLinearGradient(
@@ -372,166 +449,147 @@ function animate() {
                 conn.to.x, conn.to.y
             );
             gradient.addColorStop(0, `rgba(${fromColor[0]}, ${fromColor[1]}, ${fromColor[2]}, ${opacity})`);
-            gradient.addColorStop(0.5, `rgba(255, 255, 255, ${opacity * 0.5})`);
+            gradient.addColorStop(0.5, `rgba(220, 215, 230, ${opacity * 0.6})`);
             gradient.addColorStop(1, `rgba(${toColor[0]}, ${toColor[1]}, ${toColor[2]}, ${opacity})`);
             
-            // Soft outer glow
+            // Outer glow line (thicker, softer)
             ctx.strokeStyle = gradient;
-            ctx.lineWidth = 2;
-            ctx.shadowColor = `rgba(255, 255, 255, 0.15)`;
-            ctx.shadowBlur = 6;
+            ctx.lineWidth = focusMultiplier > 1 ? 1.5 : 1;
+            ctx.shadowColor = `rgba(200, 180, 230, ${opacity * 0.5})`;
+            ctx.shadowBlur = 4;
             ctx.beginPath();
             ctx.moveTo(conn.from.x, conn.from.y);
             ctx.lineTo(conn.to.x, conn.to.y);
             ctx.stroke();
-            
-            // Thin inner line
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.6})`;
-            ctx.lineWidth = 0.5;
-            ctx.shadowBlur = 0;
-            ctx.beginPath();
-            ctx.moveTo(conn.from.x, conn.from.y);
-            ctx.lineTo(conn.to.x, conn.to.y);
-            ctx.stroke();
-            
             ctx.shadowBlur = 0;
         }
     });
     
-    // Draw nodes as 3D spheres
+    // Draw nodes as glowing orbs
     nodes.forEach(node => {
-        const radius = node.radius;
-        const color = node.color || [100, 150, 200]; // Default color
+        const baseRadius = node.radius;
+        const color = node.color || [200, 180, 230];
         const isActive = node.visited || node.id === 'origin';
+        const isHovered = node.hover;
         
-        // Draw shadow underneath sphere for depth
-        const shadowGradient = ctx.createRadialGradient(
-            node.x + radius * 0.3, node.y + radius * 0.5, 0,
-            node.x + radius * 0.3, node.y + radius * 0.5, radius * 1.2
-        );
-        shadowGradient.addColorStop(0, 'rgba(0, 0, 0, 0.4)');
-        shadowGradient.addColorStop(0.5, 'rgba(0, 0, 0, 0.15)');
-        shadowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
-        ctx.fillStyle = shadowGradient;
-        ctx.beginPath();
-        ctx.ellipse(node.x + radius * 0.2, node.y + radius * 0.3, radius * 1.1, radius * 0.6, 0, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Outer glow for hover/active state
-        if (node.hover || isActive) {
-            const glowGradient = ctx.createRadialGradient(
-                node.x, node.y, radius,
-                node.x, node.y, radius + 15
-            );
-            glowGradient.addColorStop(0, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.5)`);
-            glowGradient.addColorStop(0.5, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.2)`);
-            glowGradient.addColorStop(1, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0)`);
-            
-            ctx.fillStyle = glowGradient;
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, radius + 15, 0, Math.PI * 2);
-            ctx.fill();
+        // Focus mode: determine if this node should be emphasized or faded
+        let focusOpacity = 1;
+        if (hoveredNode && !isHovered) {
+            focusOpacity = neighborIds.has(node.id) ? 1.1 : 0.25;
         }
         
-        // Base sphere gradient (dark to mid - creates depth)
-        const baseGradient = ctx.createRadialGradient(
-            node.x - radius * 0.4, node.y - radius * 0.4, 0,
-            node.x + radius * 0.2, node.y + radius * 0.2, radius * 1.3
-        );
-        const alpha = isActive ? 1 : 0.85;
-        // Darker bottom-right for 3D shadow effect
-        baseGradient.addColorStop(0, `rgba(${Math.min(color[0] + 40, 255)}, ${Math.min(color[1] + 40, 255)}, ${Math.min(color[2] + 40, 255)}, ${alpha})`);
-        baseGradient.addColorStop(0.4, `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`);
-        baseGradient.addColorStop(0.8, `rgba(${Math.floor(color[0] * 0.6)}, ${Math.floor(color[1] * 0.6)}, ${Math.floor(color[2] * 0.6)}, ${alpha})`);
-        baseGradient.addColorStop(1, `rgba(${Math.floor(color[0] * 0.3)}, ${Math.floor(color[1] * 0.3)}, ${Math.floor(color[2] * 0.3)}, ${alpha})`);
+        // Subtle pulse animation
+        let pulseScale = 1;
+        if (!reducedMotion && (isActive || isHovered)) {
+            pulseScale = 1 + Math.sin(animationTime * 2 + node.pulse) * 0.03;
+        }
         
-        ctx.fillStyle = baseGradient;
+        const radius = baseRadius * pulseScale;
+        
+        // Outer halo/bloom (larger, softer glow)
+        const haloMultiplier = isHovered ? 2.8 : (isActive ? 2.2 : 1.8);
+        const haloOpacity = (isHovered ? 0.4 : (isActive ? 0.25 : 0.15)) * focusOpacity;
+        
+        const haloGradient = ctx.createRadialGradient(
+            node.x, node.y, radius * 0.5,
+            node.x, node.y, radius * haloMultiplier
+        );
+        haloGradient.addColorStop(0, `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${haloOpacity})`);
+        haloGradient.addColorStop(0.4, `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${haloOpacity * 0.5})`);
+        haloGradient.addColorStop(0.7, `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${haloOpacity * 0.2})`);
+        haloGradient.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = haloGradient;
         ctx.beginPath();
-        ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, radius * haloMultiplier, 0, Math.PI * 2);
         ctx.fill();
         
-        // Inner glow / ambient light on the lit side
-        const innerGlowGradient = ctx.createRadialGradient(
-            node.x - radius * 0.5, node.y - radius * 0.5, 0,
+        // Orb core gradient (bright center, transparent edge)
+        const coreGradient = ctx.createRadialGradient(
+            node.x - radius * 0.3, node.y - radius * 0.3, 0,
             node.x, node.y, radius
         );
-        innerGlowGradient.addColorStop(0, `rgba(${Math.min(color[0] + 80, 255)}, ${Math.min(color[1] + 80, 255)}, ${Math.min(color[2] + 80, 255)}, 0.6)`);
-        innerGlowGradient.addColorStop(0.3, `rgba(${Math.min(color[0] + 40, 255)}, ${Math.min(color[1] + 40, 255)}, ${Math.min(color[2] + 40, 255)}, 0.2)`);
-        innerGlowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        const coreAlpha = (isActive ? 0.95 : 0.8) * focusOpacity;
+        coreGradient.addColorStop(0, `rgba(${Math.min(color[0] + 60, 255)}, ${Math.min(color[1] + 60, 255)}, ${Math.min(color[2] + 60, 255)}, ${coreAlpha})`);
+        coreGradient.addColorStop(0.3, `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${coreAlpha * 0.9})`);
+        coreGradient.addColorStop(0.7, `rgba(${Math.floor(color[0] * 0.7)}, ${Math.floor(color[1] * 0.7)}, ${Math.floor(color[2] * 0.7)}, ${coreAlpha * 0.7})`);
+        coreGradient.addColorStop(1, `rgba(${Math.floor(color[0] * 0.4)}, ${Math.floor(color[1] * 0.4)}, ${Math.floor(color[2] * 0.4)}, ${coreAlpha * 0.3})`);
         
-        ctx.fillStyle = innerGlowGradient;
+        ctx.fillStyle = coreGradient;
         ctx.beginPath();
         ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
         ctx.fill();
         
-        // Primary specular highlight (main light reflection)
-        const highlightX = node.x - radius * 0.35;
-        const highlightY = node.y - radius * 0.35;
-        const highlightRadius = radius * 0.4;
-        
-        const highlightGradient = ctx.createRadialGradient(
-            highlightX, highlightY, 0,
-            highlightX, highlightY, highlightRadius
+        // Inner bright core (center hotspot)
+        const innerCoreGradient = ctx.createRadialGradient(
+            node.x - radius * 0.2, node.y - radius * 0.2, 0,
+            node.x, node.y, radius * 0.6
         );
-        highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
-        highlightGradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.5)');
-        highlightGradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.1)');
-        highlightGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        const innerAlpha = (isHovered ? 0.9 : 0.7) * focusOpacity;
+        innerCoreGradient.addColorStop(0, `rgba(255, 255, 255, ${innerAlpha})`);
+        innerCoreGradient.addColorStop(0.3, `rgba(${Math.min(color[0] + 80, 255)}, ${Math.min(color[1] + 80, 255)}, ${Math.min(color[2] + 80, 255)}, ${innerAlpha * 0.5})`);
+        innerCoreGradient.addColorStop(1, 'transparent');
         
-        ctx.fillStyle = highlightGradient;
+        ctx.fillStyle = innerCoreGradient;
         ctx.beginPath();
-        ctx.arc(highlightX, highlightY, highlightRadius, 0, Math.PI * 2);
+        ctx.arc(node.x, node.y, radius * 0.6, 0, Math.PI * 2);
         ctx.fill();
         
-        // Secondary specular (smaller, brighter spot)
-        const specX = node.x - radius * 0.45;
-        const specY = node.y - radius * 0.45;
-        const specRadius = radius * 0.15;
+        // Specular highlight (small bright spot)
+        const specX = node.x - radius * 0.35;
+        const specY = node.y - radius * 0.35;
+        const specRadius = radius * 0.25;
         
         const specGradient = ctx.createRadialGradient(
             specX, specY, 0,
             specX, specY, specRadius
         );
-        specGradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-        specGradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.6)');
-        specGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        specGradient.addColorStop(0, `rgba(255, 255, 255, ${0.95 * focusOpacity})`);
+        specGradient.addColorStop(0.4, `rgba(255, 255, 255, ${0.5 * focusOpacity})`);
+        specGradient.addColorStop(1, 'transparent');
         
         ctx.fillStyle = specGradient;
         ctx.beginPath();
         ctx.arc(specX, specY, specRadius, 0, Math.PI * 2);
         ctx.fill();
+    });
+    
+    // Draw labels in a second pass (on top of all nodes)
+    nodes.forEach(node => {
+        const color = node.color || [200, 180, 230];
+        const isHovered = node.hover;
+        const isOrigin = node.id === 'origin';
         
-        // Rim lighting effect (subtle light on the edge opposite to highlight)
-        const rimGradient = ctx.createRadialGradient(
-            node.x + radius * 0.7, node.y + radius * 0.7, radius * 0.3,
-            node.x + radius * 0.5, node.y + radius * 0.5, radius * 1.1
-        );
-        rimGradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        rimGradient.addColorStop(0.6, 'rgba(0, 0, 0, 0)');
-        rimGradient.addColorStop(0.85, `rgba(${Math.min(color[0] + 60, 255)}, ${Math.min(color[1] + 60, 255)}, ${Math.min(color[2] + 60, 255)}, 0.3)`);
-        rimGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
-        ctx.fillStyle = rimGradient;
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // Subtle edge definition
-        if (node.hover) {
-            ctx.strokeStyle = `rgba(255, 255, 255, 0.4)`;
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, radius, 0, Math.PI * 2);
-            ctx.stroke();
+        // Focus mode opacity for labels
+        let labelOpacity = 0;
+        if (isHovered) {
+            labelOpacity = 1;
+        } else if (isOrigin) {
+            labelOpacity = 0.85;
+        } else if (hoveredNode && neighborIds.has(node.id)) {
+            labelOpacity = 0.6;
         }
         
-        // Draw title for hovered nodes
-        if (node.hover || node.id === 'origin') {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-            ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+        if (labelOpacity > 0) {
+            const radius = node.radius;
+            
+            // Label with soft shadow for legibility
+            ctx.save();
+            ctx.font = `500 ${isHovered ? 13 : 12}px Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif`;
             ctx.textAlign = 'center';
-            ctx.fillText(node.title, node.x, node.y - radius - 10);
+            ctx.textBaseline = 'bottom';
+            
+            // Text shadow (draw text multiple times offset)
+            ctx.fillStyle = `rgba(6, 6, 10, ${labelOpacity * 0.8})`;
+            const shadowOffsets = [[0, 1], [1, 0], [-1, 0], [0, -1], [1, 1], [-1, -1]];
+            shadowOffsets.forEach(([ox, oy]) => {
+                ctx.fillText(node.title, node.x + ox, node.y - radius - 8 + oy);
+            });
+            
+            // Main text (soft off-white, not harsh)
+            ctx.fillStyle = `rgba(240, 238, 245, ${labelOpacity * 0.95})`;
+            ctx.fillText(node.title, node.x, node.y - radius - 8);
+            ctx.restore();
         }
     });
     
@@ -561,17 +619,21 @@ function handleMouseMove(e) {
     const mouseX = (e.clientX - rect.left) / camera.zoom + camera.x;
     const mouseY = (e.clientY - rect.top) / camera.zoom + camera.y;
     
-    let hovering = false;
+    let foundHover = null;
     nodes.forEach(node => {
         const dx = mouseX - node.x;
         const dy = mouseY - node.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
-        node.hover = distance < node.radius + 5;
-        if (node.hover) hovering = true;
+        // Larger hit area for better UX
+        node.hover = distance < node.radius + 8;
+        if (node.hover) foundHover = node;
     });
     
-    canvas.style.cursor = hovering ? 'pointer' : 'grab';
+    // Update global hovered node for focus mode
+    hoveredNode = foundHover;
+    
+    canvas.style.cursor = foundHover ? 'pointer' : 'grab';
 }
 
 function handleMouseDown(e) {
@@ -658,14 +720,12 @@ function generateSubnodes(parentNode) {
     // Mark as generated so we don't create duplicates
     parentNode.subnodesGenerated = true;
     
-    // Generate 3-4 random subnodes
-    const numSubnodes = 3 + Math.floor(Math.random() * 2);
-    const shuffled = [...templates].sort(() => 0.5 - Math.random());
-    const selectedSubnodes = shuffled.slice(0, numSubnodes);
+    // Show all subnodes
+    const numSubnodes = templates.length;
     
-    selectedSubnodes.forEach((subnodeTitle, index) => {
+    templates.forEach((subnodeTitle, index) => {
         // Position around parent
-        const angle = (Math.PI * 2 / numSubnodes) * index + Math.random() * 0.5;
+        const angle = (Math.PI * 2 / numSubnodes) * index + Math.random() * 0.3;
         const distance = 80 + Math.random() * 40;
         
         const subnode = {

@@ -1,0 +1,182 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKEN SYSTEM - Is This Diya Nair?
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─────────────────────────────────────────────────────────────────────────
+     BACKGROUND COLORS
+     ───────────────────────────────────────────────────────────────────────── */
+  --bg-deep: #06060a;
+  --bg-base: #0a0a10;
+  --bg-elevated: #0f0f16;
+  --bg-surface: #14141c;
+  
+  /* Vignette gradient stops */
+  --vignette-center: rgba(18, 18, 28, 0.3);
+  --vignette-mid: rgba(10, 10, 16, 0.6);
+  --vignette-edge: rgba(4, 4, 8, 0.95);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     ACCENT COLORS (soft pastels)
+     ───────────────────────────────────────────────────────────────────────── */
+  /* Lavender */
+  --accent-lavender: rgb(200, 180, 230);
+  --accent-lavender-soft: rgba(200, 180, 230, 0.6);
+  --accent-lavender-muted: rgba(200, 180, 230, 0.3);
+  --accent-lavender-glow: rgba(200, 180, 230, 0.15);
+  
+  /* Mint */
+  --accent-mint: rgb(160, 220, 200);
+  --accent-mint-soft: rgba(160, 220, 200, 0.6);
+  --accent-mint-muted: rgba(160, 220, 200, 0.3);
+  --accent-mint-glow: rgba(160, 220, 200, 0.15);
+  
+  /* Peach */
+  --accent-peach: rgb(255, 200, 180);
+  --accent-peach-soft: rgba(255, 200, 180, 0.6);
+  --accent-peach-muted: rgba(255, 200, 180, 0.3);
+  --accent-peach-glow: rgba(255, 200, 180, 0.15);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     TEXT COLORS
+     ───────────────────────────────────────────────────────────────────────── */
+  --text-primary: rgba(240, 238, 245, 0.95);
+  --text-secondary: rgba(200, 198, 210, 0.85);
+  --text-muted: rgba(150, 148, 165, 0.7);
+  --text-faint: rgba(120, 118, 135, 0.5);
+  
+  /* Text shadows for legibility */
+  --text-shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 8px rgba(0, 0, 0, 0.2);
+  --text-shadow-glow: 0 0 10px var(--accent-lavender-muted), 0 1px 2px rgba(0, 0, 0, 0.5);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     NODE STYLING
+     ───────────────────────────────────────────────────────────────────────── */
+  /* Sizes */
+  --node-radius-sm: 6px;
+  --node-radius-md: 10px;
+  --node-radius-lg: 16px;
+  
+  /* Glow strengths */
+  --node-glow-idle: 0.4;
+  --node-glow-hover: 0.8;
+  --node-glow-active: 1.0;
+  
+  /* Halo sizes (multiplier of radius) */
+  --node-halo-idle: 1.8;
+  --node-halo-hover: 2.4;
+  --node-halo-active: 2.8;
+  
+  /* Core brightness */
+  --node-core-opacity: 0.95;
+  --node-edge-opacity: 0.0;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     LINK STYLING
+     ───────────────────────────────────────────────────────────────────────── */
+  --link-width-thin: 0.5;
+  --link-width-normal: 1.0;
+  --link-width-thick: 1.5;
+  
+  --link-opacity-faint: 0.06;
+  --link-opacity-idle: 0.12;
+  --link-opacity-hover: 0.35;
+  --link-opacity-active: 0.5;
+  
+  --link-glow-radius: 4px;
+  --link-glow-opacity: 0.15;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     BLUR & GLOW AMOUNTS
+     ───────────────────────────────────────────────────────────────────────── */
+  --blur-subtle: 2px;
+  --blur-soft: 5px;
+  --blur-medium: 10px;
+  --blur-strong: 20px;
+  
+  --glow-subtle: 0 0 8px;
+  --glow-soft: 0 0 15px;
+  --glow-medium: 0 0 25px;
+  --glow-strong: 0 0 40px;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     ANIMATION TIMINGS
+     ───────────────────────────────────────────────────────────────────────── */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-drift: 3000ms;
+  --duration-pulse: 2500ms;
+  
+  --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     STARFIELD
+     ───────────────────────────────────────────────────────────────────────── */
+  --star-color-cool: rgba(200, 210, 230, 0.8);
+  --star-color-warm: rgba(255, 230, 220, 0.7);
+  --star-size-min: 0.5;
+  --star-size-max: 2.0;
+  --star-twinkle-duration: 3s;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     GLASS/HUD EFFECTS
+     ───────────────────────────────────────────────────────────────────────── */
+  --glass-bg: rgba(12, 12, 20, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
+  --glass-blur: 12px;
+  --glass-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.1);
+  
+  /* ─────────────────────────────────────────────────────────────────────────
+     FOCUS MODE (hover neighbor emphasis)
+     ───────────────────────────────────────────────────────────────────────── */
+  --focus-fade-opacity: 0.2;
+  --focus-neighbor-boost: 1.2;
+  --focus-transition: var(--duration-normal) var(--ease-out-soft);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     Z-INDEX LAYERS
+     ───────────────────────────────────────────────────────────────────────── */
+  --z-background: 0;
+  --z-stars: 1;
+  --z-links: 2;
+  --z-nodes: 3;
+  --z-labels: 4;
+  --z-hud: 50;
+  --z-overlay: 100;
+  --z-modal: 1000;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION PREFERENCES
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-drift: 0ms;
+    --duration-pulse: 0ms;
+    --star-twinkle-duration: 0s;
+  }
+  
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FONT LOADING (Inter)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+}
+
